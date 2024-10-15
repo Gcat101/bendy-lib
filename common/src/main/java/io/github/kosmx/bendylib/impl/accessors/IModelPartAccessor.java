@@ -1,19 +1,18 @@
 package io.github.kosmx.bendylib.impl.accessors;
 
 import io.github.kosmx.bendylib.ModelPartAccessor;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.client.model.ModelPart;
-
-import java.util.List;
-import java.util.Map;
+import net.minecraft.client.model.ModelPart.Cuboid;
 
 /**
  * Basic operation to access cuboid in ModelPart
  */
 public interface IModelPartAccessor {
 
-    List<ModelPart.Cuboid> getCuboids();
+    ObjectList<Cuboid> getCuboids();
 
-    Map<String, ModelPart> getChildren(); //easy to search in it :D
+    ObjectList<ModelPart> getChildren(); //easy to search in it :D
 
     void setWorkaround(ModelPartAccessor.Workaround workaround);
 

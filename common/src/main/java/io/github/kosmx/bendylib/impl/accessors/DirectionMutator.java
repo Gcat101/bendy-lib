@@ -1,7 +1,6 @@
 package io.github.kosmx.bendylib.impl.accessors;
 
-import net.minecraft.util.math.Vec3f;
-
+import net.minecraft.client.util.math.Vector3f;
 public interface DirectionMutator {
-    void setDirection(Vec3f vec3f);
+    void setDirection(Vector3f vec3f);
 }

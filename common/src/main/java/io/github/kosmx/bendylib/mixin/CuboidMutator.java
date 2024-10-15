@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,8 +62,7 @@ public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
     public boolean unregisterMutator(String name) {
         if(mutatorBuilders.remove(name) != null){
             if(name.equals(activeMutatorID)){
-                activeMutator = null;
-                activeMutatorID = null;
+                clearActiveMutator();
             }
             mutators.remove(name);
 
@@ -77,6 +76,11 @@ public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
     public Pair<String, ICuboid> getActiveMutator() {
         return activeMutator == null ? null : new Pair<>(activeMutatorID, activeMutator);
     }
+    @Override
+    public void clearActiveMutator() {
+        activeMutator = null;
+        activeMutatorID = null;
+    }
 
     @Nullable
     @Override
@@ -88,8 +92,7 @@ public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
     @Override
     public ICuboid getAndActivateMutator(@Nullable String name) {
         if(name == null){
-            activeMutatorID = null;
-            activeMutator = null;
+            clearActiveMutator();
             return null;
         }
         if(mutatorBuilders.containsKey(name)){
@@ -105,8 +108,7 @@ public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
     @Override
     public void copyStateFrom(MutableCuboid other) {
         if(other.getActiveMutator() == null){
-            activeMutator = null;
-            activeMutatorID = null;
+            clearActiveMutator();
         }
         else {
             if(this.getAndActivateMutator(other.getActiveMutator().getLeft()) != null){
@@ -115,17 +117,16 @@ public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
         }
     }
 
-    @Inject(method = "renderCuboid", at = @At(value = "HEAD"), cancellable = true)
-    private void renderRedirect(MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo ci){
-        if(getActiveMutator() != null){
-            getActiveMutator().getRight().render(entry, vertexConsumer, red, green, blue, alpha, light, overlay);
-            if(getActiveMutator().getRight().disableAfterDraw()) {
-                activeMutator = null; //mutator lives only for one render cycle
-                activeMutatorID = null;
-            }
-            ci.cancel();
-        }
-    }
+    // @Inject(method = "renderCuboid", at = @At(value = "HEAD"), cancellable = true)
+    // private void renderRedirect(MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo ci){
+    //     if(getActiveMutator() != null){
+    //         getActiveMutator().getRight().render(entry, vertexConsumer, red, green, blue, alpha, light, overlay);
+    //         if(getActiveMutator().getRight().disableAfterDraw()) {
+    //             clearActiveMutator(); //mutator lives only for one render cycle
+    //         }
+    //         ci.cancel();
+    //     }
+    // }
 
     @Override
     public void doSideSwapping(){

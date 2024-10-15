@@ -1,14 +1,14 @@
 package io.github.kosmx.bendylib;
 
+
 import io.github.kosmx.bendylib.impl.ICuboid;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * ModelPart to support ICuboids
@@ -25,8 +25,20 @@ public abstract class MutableModelPart extends ModelPart {
 
     protected final ObjectList<ICuboid> iCuboids = new ObjectArrayList<>();
 
-    public MutableModelPart(List<Cuboid> cuboids, Map<String, ModelPart> children) {
-        super(cuboids, children);
+    public MutableModelPart(Model model) {
+        super(model);
+    }
+
+    public MutableModelPart(Model model, int textureOffsetU, int textureOffsetV) {
+        super(model, textureOffsetU, textureOffsetV);
+    }
+
+    public MutableModelPart(int textureWidth, int textureHeight, int textureOffsetU, int textureOffsetV) {
+        super(textureWidth, textureHeight, textureOffsetU, textureOffsetV);
+    }
+
+    public MutableModelPart(ModelPart modelPart){
+        this((int)modelPart.textureWidth, (int)modelPart.textureHeight, modelPart.textureOffsetU, modelPart.textureOffsetV);
     }
 
 

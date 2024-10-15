@@ -2,8 +2,8 @@ package io.github.kosmx.bendylib;
 
 import io.github.kosmx.bendylib.impl.DummyCuboid;
 import io.github.kosmx.bendylib.impl.accessors.IModelPartAccessor;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.client.model.ModelPart;
-
 import java.util.*;
 
 /**
@@ -12,7 +12,7 @@ import java.util.*;
  */
 public final class ModelPartAccessor {
 
-    public static Map<String,ModelPart> getChildren(ModelPart modelPart){
+    public static ObjectList<ModelPart> getChildren(ModelPart modelPart){
         return ((IModelPartAccessor)modelPart).getChildren();
     }
 

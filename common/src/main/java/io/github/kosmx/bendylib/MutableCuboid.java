@@ -2,7 +2,7 @@ package io.github.kosmx.bendylib;
 
 import io.github.kosmx.bendylib.impl.ICuboid;
 import net.minecraft.util.Pair;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public interface MutableCuboid {
 
@@ -27,6 +27,11 @@ public interface MutableCuboid {
      */
     @Nullable
     Pair<String, ICuboid> getActiveMutator();
+
+    /**
+     * Clear the current active mutator
+     */
+    default void clearActiveMutator() {}
 
     /**
      * Get a mutator
